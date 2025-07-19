@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	rgb "lolcat-ibrahim-edition/util"
 	"strings"
 
 	"syreclabs.com/go/faker"
@@ -13,8 +14,8 @@ func main() {
 		phrases = append(phrases,faker.Hacker().Phrases()...)
 	}
 	output := strings.Join(phrases[:],"; ")
-	r,g,b := 29, 122,107
 	for j:=0;j<len(output);j++{
+		r,g,b := rgb.GenerateRGB(j)
 		fmt.Printf("\033[38;2;%d;%d;%dm%c\033[0m",r,g,b,output[j])
 	}
 }
