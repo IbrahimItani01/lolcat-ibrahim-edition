@@ -1,21 +1,28 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	rgb "lolcat-ibrahim-edition/util"
-	"strings"
-
-	"syreclabs.com/go/faker"
+	"io"
+	util "lolcat-ibrahim-edition/util"
+	"os"
 )
 
 func main() {
-	var phrases []string
-	for i:=1; i<3;i++ {
-		phrases = append(phrases,faker.Hacker().Phrases()...)
+	fileInfo, _ := os.Stdin.Stat()
+	var output []rune
+
+	if fileInfo.Mode() & os.ModeCharDevice != 0 {
+		fmt.Println("The command is intended to work with pipes.")
+        fmt.Println("Usage: fortune | gorainbow")
 	}
-	output := strings.Join(phrases[:],"; ")
-	for j:=0;j<len(output);j++{
-		r,g,b := rgb.GenerateRGB(j)
-		fmt.Printf("\033[38;2;%d;%d;%dm%c\033[0m",r,g,b,output[j])
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		input, _, err := reader.ReadRune()
+		if err != nil && err == io.EOF {
+            break
+        }
+		output = append(output, input)
 	}
+	util.PrintOutput(output)
 }

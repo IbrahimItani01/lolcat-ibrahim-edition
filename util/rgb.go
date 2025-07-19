@@ -1,4 +1,4 @@
-package rgb
+package util
 
 import (
 	"math"
